@@ -7,25 +7,13 @@ interface ServiceOptions{
     revalidate?: number;
 }
 
-interface CategoryParams{
-    name: string;
-}
 
 export const categoriesService = {
   async getAllCategories(
-    params?: CategoryParams,
     options?: ServiceOptions
   ) {
     try {
       const url = new URL(`${API_URL}/api/categories`);
-
-      if (params) {
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
-            url.searchParams.append(key, String(value));
-          }
-        });
-      }
 
       const config: RequestInit & { next?: any } = {};
 

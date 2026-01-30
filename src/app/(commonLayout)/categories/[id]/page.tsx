@@ -1,6 +1,7 @@
 import { categoriesService } from "@/services/categories.service";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 interface PageProps {
   params: Promise<{
@@ -21,14 +22,11 @@ export default async function CategoryDetailsPage({ params }: PageProps) {
   const meals = category.meals ?? [];
 
   const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c";
-
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c";
 
   return (
     <main className="container mx-auto p-6">
-      <h1 className="text-3xl font-semibold mb-6">
-        {category.name}
-      </h1>
+      <h1 className="text-3xl font-semibold mb-6">{category.name}</h1>
 
       {meals.length === 0 ? (
         <p className="text-muted-foreground">
@@ -37,9 +35,10 @@ export default async function CategoryDetailsPage({ params }: PageProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {meals.map((meal: any) => (
-            <div
+            <Link
               key={meal.id}
-              className="border rounded-lg rounded-xl overflow-hidden hover:shadow-md transition"
+              href={`/meals/${meal.id}`}
+              className="block border rounded-xl overflow-hidden hover:shadow-lg transition duration-200"
             >
               <div className="relative h-40 w-full bg-gray-100">
                 <Image
@@ -57,20 +56,18 @@ export default async function CategoryDetailsPage({ params }: PageProps) {
                 </p>
 
                 <div className="flex justify-between items-center mt-3">
-                  <span className="font-semibold">৳ {meal.price}</span>
+                  <span className="font-semibold">${meal.price.toFixed(2)}</span>
 
                   <span
                     className={`text-xs ${
-                      meal.isAvailable
-                        ? "text-green-600"
-                        : "text-red-500"
+                      meal.isAvailable ? "text-green-600" : "text-red-500"
                     }`}
                   >
                     {meal.isAvailable ? "Available" : "Unavailable"}
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
