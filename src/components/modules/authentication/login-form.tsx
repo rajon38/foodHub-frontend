@@ -1,21 +1,32 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { authClient } from "@/lib/auth-client";
-import * as z from "zod";
 import { useForm} from "@tanstack/react-form"
 import { toast } from "sonner";
+import * as z from "zod"
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  role: z.enum(["CUSTOMER", "PROVIDER"]),
   email: z.string(),
   password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  role: z.enum(["ADMIN", "PROVIDER", "CUSTOMER"])
 });
 
-export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
+export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
   const handleGoogleLogin = async () => {
     const data = authClient.signIn.social({
       provider: "google",
@@ -26,24 +37,23 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
   };
   const form = useForm({
     defaultValues: {
-      name: '',
-      role: "CUSTOMER",
       email: '',
       password: '',
+      role: "CUSTOMER",
     },
     validators:{
       onSubmit: formSchema
     },
     onSubmit: async ({value}) => {
-      const toastId = toast.loading("Creating your account...");
+      const toastId = toast.loading("Logging you in...");
       try {
-        const {data, error} = await authClient.signUp.email(value)
+        const {data, error} = await authClient.signIn.email(value)
 
         if (error) {
           toast.error(error.message, {id: toastId});
           return;
         }
-        toast.success("Account created successfully! Please check your email to verify your account.", {id: toastId});
+        toast.success("Logged in successfully!", {id: toastId});
       } catch (error) {
         toast.error("Something went wrong. Please try again.", {id: toastId});
       }
@@ -52,18 +62,18 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 return (
   <Card {...props} className="max-w-md mx-auto shadow-lg">
     <CardHeader className="text-center space-y-2">
-      <div className="text-4xl">🍕</div>
+      <div className="text-4xl">🍔</div>
       <CardTitle className="text-2xl font-bold">
-        Join FoodHub Today
+        Welcome back to FoodHub
       </CardTitle>
       <CardDescription>
-        Create an account to order delicious meals or serve customers
+        Login to order delicious meals or manage your kitchen
       </CardDescription>
     </CardHeader>
 
     <CardContent>
       <form
-        id="register-form"
+        id="login-form"
         onSubmit={(e) => {
           e.preventDefault();
           form.handleSubmit();
@@ -71,26 +81,22 @@ return (
         className="space-y-4"
       >
         <FieldGroup>
-          {/* Name */}
+          {/* Email */}
           <form.Field
-            name="name"
+            name="email"
             children={(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
 
               return (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>
-                    Full Name
-                  </FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                   <input
-                    type="text"
+                    type="email"
                     id={field.name}
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
-                    placeholder="John Doe"
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="you@foodhub.com"
                     className="w-full rounded-md border px-3 py-2 text-sm"
                   />
                   {isInvalid && (
@@ -101,26 +107,22 @@ return (
             }}
           />
 
-          {/* Email */}
+          {/* Password */}
           <form.Field
-            name="email"
+            name="password"
             children={(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
 
               return (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>
-                    Email
-                  </FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                   <input
-                    type="email"
+                    type="password"
                     id={field.name}
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
-                    placeholder="you@foodhub.com"
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="••••••••"
                     className="w-full rounded-md border px-3 py-2 text-sm"
                   />
                   {isInvalid && (
@@ -141,7 +143,7 @@ return (
               return (
                 <Field>
                   <FieldLabel htmlFor={field.name}>
-                    I want to join as
+                    Continue as
                   </FieldLabel>
                   <select
                     id={field.name}
@@ -155,40 +157,13 @@ return (
                       🍽️ Customer – Order food
                     </option>
                     <option value="PROVIDER">
-                      👨‍🍳 Provider – Sell meals
+                      👨‍🍳 Provider – Manage meals
+                    </option>
+                    <option value="ADMIN">
+                      🛠️ Admin – Manage platform
                     </option>
                   </select>
 
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
-                </Field>
-              );
-            }}
-          />
-
-          {/* Password */}
-          <form.Field
-            name="password"
-            children={(field) => {
-              const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid;
-
-              return (
-                <Field>
-                  <FieldLabel htmlFor={field.name}>
-                    Password
-                  </FieldLabel>
-                  <input
-                    type="password"
-                    id={field.name}
-                    value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
-                    placeholder="At least 8 characters"
-                    className="w-full rounded-md border px-3 py-2 text-sm"
-                  />
                   {isInvalid && (
                     <FieldError errors={field.state.meta.errors} />
                   )}
@@ -202,11 +177,11 @@ return (
 
     <CardFooter className="flex flex-col gap-4">
       <Button
-        form="register-form"
+        form="login-form"
         type="submit"
         className="w-full bg-orange-600 hover:bg-orange-700"
       >
-        Create FoodHub Account
+        Login to FoodHub
       </Button>
 
       <div className="relative w-full text-center text-sm text-muted-foreground">
@@ -219,22 +194,8 @@ return (
         type="button"
         className="w-full"
       >
-        Sign up with Google
+        Continue with Google
       </Button>
-      <p className="text-xs text-center text-muted-foreground">
-        Google registration is available for <span className="font-medium">customers only</span>.
-      </p>
-
-
-      <p className="text-sm text-center text-muted-foreground">
-        Already have an account?{" "}
-        <a
-          href="/login"
-          className="text-orange-600 hover:underline"
-        >
-          Login
-        </a>
-      </p>
     </CardFooter>
   </Card>
 );
