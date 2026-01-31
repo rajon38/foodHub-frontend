@@ -63,7 +63,6 @@ async getAllMeals(params?: MealParams,options?: ServiceOptions) {
       error: null
     };
   } catch (err) {
-    console.error("Error fetching meals:", err);
     return {
       data: [],
       meta: { total: 0, page: 1, limit: 10, totalPages: 0 },
