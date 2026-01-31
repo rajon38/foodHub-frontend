@@ -7,8 +7,10 @@ import { categoriesService } from "@/services/categories.service";
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
 
-const FALLBACK_IMAGE =
+const FALLBACK_IMAGE_1 =
   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c";
+const FALLBACK_IMAGE_2 =
+"https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
 
 export default async function HomePage() {
   const { data: categories } = await categoriesService.getAllCategories();
@@ -112,7 +114,7 @@ export default async function HomePage() {
             >
               <div className="relative h-52">
                 <Image
-                  src={FALLBACK_IMAGE}
+                  src={FALLBACK_IMAGE_1}
                   alt={meal.name}
                   fill
                   className="object-cover group-hover:scale-105 transition duration-300"
@@ -161,7 +163,7 @@ export default async function HomePage() {
                 className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition bg-slate-50"
               >
                 <Image
-                  src={FALLBACK_IMAGE}
+                  src={FALLBACK_IMAGE_2}
                   alt={provider.restaurantName}
                   width={400}
                   height={250}

@@ -57,7 +57,7 @@ interface Navbar1Props {
 const Navbar = ({
   logo = {
     url: "/",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
+    src: "https://unpkg.com/heroicons@2.0.18/24/solid/sparkles.svg",
     alt: "logo",
     title: "FoodHub",
   },

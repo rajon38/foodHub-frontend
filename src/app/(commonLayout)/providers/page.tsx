@@ -12,7 +12,7 @@ export default async function ProvidersPage() {
     return <p className="text-center text-gray-500 mt-10">No restaurants found</p>;
 
   const FALLBACK =
-    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c";
+    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5";
 
   return (
     <main className="bg-slate-50 min-h-screen">

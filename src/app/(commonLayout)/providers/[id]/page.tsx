@@ -15,26 +15,29 @@ export default async function ProviderDetailsPage({ params }: PageProps) {
   if (error || !provider) notFound();
 
   const meals = provider.meals ?? [];
-  const FALLBACK =
+  const FALLBACK_IMAGE_1 =
     "https://images.unsplash.com/photo-1546069901-ba9599a7e63c";
+
+  const FALLBACK_IMAGE_2 =
+    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
 
   return (
     <main className="bg-slate-50 min-h-screen">
       {/* HERO */}
       <section className="relative h-[45vh]">
         <Image
-          src={FALLBACK}
+          src={FALLBACK_IMAGE_2}
           alt={provider.restaurantName}
           fill
           className="object-cover"
         />
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="absolute bottom-6 left-6 text-white">
-          <h1 className="text-4xl font-extrabold">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
+          <h1 className="text-6xl font-extrabold">
             {provider.restaurantName}
           </h1>
-          <p className="mt-1 text-sm opacity-90">
+          <p className="mt-1 text-md opacity-90">
             {provider.description}
           </p>
         </div>
@@ -68,7 +71,7 @@ export default async function ProviderDetailsPage({ params }: PageProps) {
                 className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition"
               >
                 <Image
-                  src={FALLBACK}
+                  src={FALLBACK_IMAGE_1}
                   alt={meal.name}
                   width={400}
                   height={240}
