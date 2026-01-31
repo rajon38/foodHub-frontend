@@ -1,3 +1,4 @@
+
 import PaginationControls from "@/components/ui/pagination-control";
 import { mealsService } from "@/services/meal.service";
 import { Meal } from "@/types";

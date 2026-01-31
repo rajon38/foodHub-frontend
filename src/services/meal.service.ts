@@ -49,7 +49,6 @@ async getAllMeals(params?: MealParams,options?: ServiceOptions) {
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error(`API Error (${res.status}):`, errorText);
       throw new Error(`Failed to fetch meals: ${res.status} ${res.statusText}`);
     }
 

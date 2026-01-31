@@ -47,7 +47,6 @@ async getAllProviders(params?: ProviderParams,options?: ServiceOptions) {
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error(`API Error (${res.status}):`, errorText);
       throw new Error(`Failed to fetch providers: ${res.status} ${res.statusText}`);
     }
 
