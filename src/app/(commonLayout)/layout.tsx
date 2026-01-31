@@ -1,3 +1,5 @@
+
+import Footer from "@/components/footer";
 import { Navbar } from "@/components/layout/Navber";
 
 export default function CommonLayout({children}: {children: React.ReactNode}) {
@@ -5,6 +7,7 @@ export default function CommonLayout({children}: {children: React.ReactNode}) {
     <div>
         <Navbar />
         {children}
+        <Footer />
     </div>
   );
 }
