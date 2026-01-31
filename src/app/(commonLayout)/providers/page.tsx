@@ -16,9 +16,18 @@ export default async function ProvidersPage() {
 
   return (
     <main className="bg-slate-50 min-h-screen">
+              {/* ================= HEADER ================= */}
+      <section className="bg-white border-b">
+        <div className="container mx-auto px-6 py-10">
+          <h1 className="text-3xl md:text-4xl font-extrabold">
+            Restaurants
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Discover restaurants from top providers near you
+          </p>
+        </div>
+      </section>
       <section className="container mx-auto px-6 py-12">
-        <h1 className="text-4xl font-extrabold mb-8">Restaurants</h1>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {providers.map((provider: any) => (
             <Link
