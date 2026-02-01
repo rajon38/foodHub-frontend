@@ -12,11 +12,11 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { adminRoutes } from "@/routes/adminRoutes";
 import { Route } from "@/types";
 import { Roles } from "@/constants/roles";
-import { adminRoutes } from "@/routes/adminRoutes";
-import { customerRoutes } from "@/routes/customerRoutes";
 import { providerRoutes } from "@/routes/providerRoutes";
+import { customerRoutes } from "@/routes/customerRoutes";
 
 export function AppSidebar({
   user,
@@ -30,11 +30,11 @@ export function AppSidebar({
     case Roles.admin:
       routes = adminRoutes;
       break;
-    case Roles.customer:
-      routes = customerRoutes;
-      break;
     case Roles.provider:
       routes = providerRoutes;
+      break;
+    case Roles.customer:
+      routes = customerRoutes;
       break;
     default:
       routes = [];
@@ -42,7 +42,7 @@ export function AppSidebar({
   }
 
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} className="pt-18">
       <SidebarContent>
         {routes.map((item) => (
           <SidebarGroup key={item.title}>

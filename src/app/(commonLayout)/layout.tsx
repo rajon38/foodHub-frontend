@@ -1,4 +1,4 @@
-import Footer from "@/components/footer";
+import Footer from "@/components/layout/footer";
 import { NavbarWrapper } from "@/components/layout/NavbarWrapper";
 
 export default function CommonLayout({children}: {children: React.ReactNode}) {
