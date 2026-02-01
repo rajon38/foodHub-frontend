@@ -54,6 +54,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Logged in successfully!", {id: toastId});
+        window.location.href = "/";
       } catch (error) {
         toast.error("Something went wrong. Please try again.", {id: toastId});
       }

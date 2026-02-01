@@ -44,6 +44,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Account created successfully! Please check your email to verify your account.", {id: toastId});
+        window.location.href = "/";
       } catch (error) {
         toast.error("Something went wrong. Please try again.", {id: toastId});
       }

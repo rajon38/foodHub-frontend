@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu} from "lucide-react";
+import { Menu, LogOut } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
+import { useRouter } from "next/navigation";
 
 interface MenuItem {
   title: string;
@@ -52,6 +53,9 @@ interface Navbar1Props {
       url: string;
     };
   };
+  isAuthenticated?: boolean;
+  dashboardUrl?: string;
+  onLogout?: () => void;
 }
 
 const Navbar = ({
@@ -71,8 +75,20 @@ const Navbar = ({
     login: { title: "Login", url: "/login" },
     signup: { title: "Register", url: "/register" },
   },
+  isAuthenticated = false,
+  dashboardUrl = "/dashboard",
+  onLogout,
   className,
 }: Navbar1Props) => {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    if (onLogout) {
+      await onLogout();
+    }
+    router.push("/");
+  };
+
   return (
     <header
       className={cn(
@@ -109,17 +125,37 @@ const Navbar = ({
           <div className="flex items-center gap-3">
             <ModeToggle />
 
-            <Button asChild variant="ghost" size="sm">
-              <Link href={auth.login.url}>{auth.login.title}</Link>
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link href={dashboardUrl}>Dashboard</Link>
+                </Button>
 
-            <Button
-              asChild
-              size="sm"
-              className="bg-orange-600 hover:bg-orange-700"
-            >
-              <Link href={auth.signup.url}>{auth.signup.title}</Link>
-            </Button>
+                <Button
+                  onClick={handleLogout}
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link href={auth.login.url}>{auth.login.title}</Link>
+                </Button>
+
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-orange-600 hover:bg-orange-700"
+                >
+                  <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </nav>
 
@@ -131,9 +167,7 @@ const Navbar = ({
               alt={logo.alt}
               className="h-8 w-8 dark:invert"
             />
-            <span className="text-lg font-semibold">
-              {logo.title}
-            </span>
+            <span className="text-lg font-semibold">{logo.title}</span>
           </Link>
 
           <Sheet>
@@ -162,18 +196,35 @@ const Navbar = ({
                 </div>
 
                 <div className="border-t pt-4 flex flex-col gap-3">
-                  <Button asChild variant="outline">
-                    <Link href={auth.login.url}>{auth.login.title}</Link>
-                  </Button>
+                  {isAuthenticated ? (
+                    <>
+                      <Button asChild variant="outline">
+                        <Link href={dashboardUrl}>Dashboard</Link>
+                      </Button>
 
-                  <Button
-                    asChild
-                    className="bg-orange-600 hover:bg-orange-700"
-                  >
-                    <Link href={auth.signup.url}>
-                      {auth.signup.title}
-                    </Link>
-                  </Button>
+                      <Button
+                        onClick={handleLogout}
+                        variant="outline"
+                        className="gap-2"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button asChild variant="outline">
+                        <Link href={auth.login.url}>{auth.login.title}</Link>
+                      </Button>
+
+                      <Button
+                        asChild
+                        className="bg-orange-600 hover:bg-orange-700"
+                      >
+                        <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>
@@ -204,7 +255,5 @@ const renderMobileMenuItem = (item: MenuItem) => (
     {item.title}
   </Link>
 );
-
-
 
 export { Navbar };
