@@ -5,8 +5,8 @@ export const providerRoutes: Route[] = [
       title: "Provider Management",
       items: [
         {
-          title: "Analytics",
-          url: "/analytics",
+          title: "Orders",
+          url: "/provider-dashboard/order",
         }
       ],
     }

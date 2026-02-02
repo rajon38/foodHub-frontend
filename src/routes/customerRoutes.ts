@@ -5,8 +5,8 @@ export const customerRoutes: Route[] = [
       title: "Customer Management",
       items: [
         {
-          title: "Analytics",
-          url: "/analytics",
+          title: "Orders",
+          url: "/dashboard/order",
         }
       ],
     }

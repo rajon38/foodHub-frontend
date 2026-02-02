@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 const API_URL = env.API_URL;
 
 interface ServiceOptions {
@@ -11,6 +12,14 @@ interface ProviderParams {
   isOpen?: boolean;
   page?: number;
   limit?: number;
+}
+
+export interface ProviderUpdateData {
+  name?: string;
+  description?: string;
+  isOpen?: boolean;
+  phone?: string;
+  address?: string;
 }
 
 export const providerService = {
@@ -52,9 +61,11 @@ async getAllProviders(params?: ProviderParams,options?: ServiceOptions) {
 
     const json = await res.json();
 
+    console.log("Fetched Providers Data:", json);
+
     return {
       data: json.data,
-      meta: json.meta,
+      meta: json.pagination,
       error: null,
     };
   } catch (err) {
@@ -62,7 +73,7 @@ async getAllProviders(params?: ProviderParams,options?: ServiceOptions) {
       data: [],
       meta: { total: 0, page: 1, limit: 10, totalPages: 0 },
       error: { 
-        message: err instanceof Error ? err.message : "Something went wrong while fetching meals" 
+        message: err instanceof Error ? err.message : "Something went wrong while fetching providers" 
       },
     };
   }
@@ -104,7 +115,42 @@ async getProviderById(id: string) {
     }
   },
 
-async updateProvider(id: string) {
-  
+async updateProvider(id: string, data: ProviderUpdateData) {
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/api/providers/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: cookieStore.toString()
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log("Fetch URL:", `${API_URL}/api/providers/${id}`);
+    console.log("Update Data:", data);
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`API Error (${res.status}):`, errorText);
+      throw new Error(`Failed to update provider: ${res.status} ${res.statusText}`);
+    }
+
+    const json = await res.json();
+
+    console.log("Updated Provider Data:", json);
+
+    return {
+      data: json,
+      error: null,
+    };
+  } catch (err) {
+      return {
+        data: null,
+        error: { 
+          message: err instanceof Error ? err.message : "Something went wrong while updating the provider" 
+        },
+      };
+    }
 }
 }
