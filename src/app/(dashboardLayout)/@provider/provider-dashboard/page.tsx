@@ -1,8 +1,5 @@
+import { redirect } from "next/navigation";
 export const dynamic = 'force-dynamic';
-export default function ProviderDashboard() {
-  return (
-    <div>
-      <h1> Provider Dashboard </h1>
-    </div>
-  );
+export default async function ProviderDashboard() {
+  return redirect("/provider-dashboard/profile");
 }

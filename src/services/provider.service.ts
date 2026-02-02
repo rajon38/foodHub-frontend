@@ -23,7 +23,7 @@ export interface ProviderUpdateData {
 }
 
 export const providerService = {
-async getAllProviders(params?: ProviderParams,options?: ServiceOptions) {
+getAllProviders: async (params?: ProviderParams,options?: ServiceOptions) => {
   try {
     const url = new URL(`${API_URL}/api/providers`);
     if (params) {
@@ -79,7 +79,7 @@ async getAllProviders(params?: ProviderParams,options?: ServiceOptions) {
   }
 },
 
-async getProviderById(id: string) {
+getProviderById: async (id: string) => {
     try {
       const res = await fetch(`${API_URL}/api/providers/${id}`, {
         method: 'GET',
@@ -115,7 +115,7 @@ async getProviderById(id: string) {
     }
   },
 
-async updateProvider(id: string, data: ProviderUpdateData) {
+updateProvider: async (id: string, data: ProviderUpdateData) =>{
   try {
     const cookieStore = await cookies();
     const res = await fetch(`${API_URL}/api/providers/${id}`, {

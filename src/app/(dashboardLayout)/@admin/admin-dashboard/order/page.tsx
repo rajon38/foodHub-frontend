@@ -1,6 +1,6 @@
 import { orderService } from "@/services/orderService";
 import { OrderTableWrapper } from "@/components/modules/orders/order-table-wrapper";
-import { redirect } from "next/navigation";// Adjust import based on your auth implementation
+import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
 import { Roles } from "@/constants/roles";
 
@@ -50,6 +50,7 @@ export default async function AdminOrderPage({ searchParams }: AdminOrderPagePro
           pagination={meta || { page: 1, limit: 10, totalPages: 1, totalItems: 0 }}
           showCustomer={true}
           showProvider={true}
+          userRole="admin"
         />
       )}
     </div>

@@ -105,4 +105,95 @@ export const orderService = {
         };
     }
     },
+    updateOrder: async (orderId: string, updateData: Partial<OrderData>) => {
+    try {
+        const cookieStore = await cookies();
+        const res = await fetch(`${API_URL}/api/orders/${orderId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                cookie: cookieStore.toString()
+            },
+            body: JSON.stringify(updateData),
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`Failed to update order: ${res.status} ${res.statusText} - ${errorText}`);
+        }
+
+        const json = await res.json();
+        return {
+            data: json,
+            error: null,
+        };
+    } catch (err) {
+        return {
+            data: null,
+            error: { 
+                message: err instanceof Error ? err.message : "Something went wrong while updating the order" 
+            },
+        };
+    }
+  },
+  updateOrderStatus: async (orderId: string, status: string) => {
+    try {
+        const cookieStore = await cookies();
+        const res = await fetch(`${API_URL}/api/orders/status/${orderId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                cookie: cookieStore.toString()
+            },
+            body: JSON.stringify({ status }),
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`Failed to update order status: ${res.status} ${res.statusText} - ${errorText}`);
+        }
+
+        const json = await res.json();
+        return {
+            data: json,
+            error: null,
+        };
+    } catch (err) {
+        return {
+            data: null,
+            error: { 
+                message: err instanceof Error ? err.message : "Something went wrong while updating the order status" 
+            },
+        };
+    }
+  },
+  orderDelete: async (orderId: string) => {
+    try {
+        const cookieStore = await cookies();
+        const res = await fetch(`${API_URL}/api/orders/${orderId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                cookie: cookieStore.toString()
+            },
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`Failed to delete order: ${res.status} ${res.statusText} - ${errorText}`);
+        }
+
+        return {
+            data: true,
+            error: null,
+        };
+    } catch (err) {
+        return {
+            data: null,
+            error: { 
+                message: err instanceof Error ? err.message : "Something went wrong while deleting the order" 
+            },
+        };
+    }
+  }
 };

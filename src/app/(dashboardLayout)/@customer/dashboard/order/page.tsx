@@ -5,6 +5,7 @@ import { Roles } from "@/constants/roles";
 import { userService } from "@/services/user.service";
 
 export const dynamic = 'force-dynamic';
+
 interface CustomerOrderPageProps {
   searchParams: Promise<{
     page?: string;
@@ -80,8 +81,9 @@ export default async function CustomerOrderPage({ searchParams }: CustomerOrderP
         <OrderTableWrapper
           orders={data || []}
           pagination={meta || { page: 1, limit: 10, totalPages: 1, totalItems: 0 }}
-          showCustomer={false} // Don't show customer column since all orders belong to this customer
-          showProvider={true} // Show which provider the order is from
+          showCustomer={false}
+          showProvider={true}
+          userRole="customer"
         />
       )}
     </div>

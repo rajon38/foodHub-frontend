@@ -13,9 +13,7 @@ export interface CategoryData {
 
 
 export const categoriesService = {
-  async getAllCategories(
-    options?: ServiceOptions
-  ) {
+  getAllCategories: async( options?: ServiceOptions) =>{
     try {
       const url = new URL(`${API_URL}/api/categories`);
 
@@ -48,7 +46,7 @@ export const categoriesService = {
     }
   },
 
-  async getCategoryById(id: string, options?: ServiceOptions) {
+  getCategoryById: async (id: string, options?: ServiceOptions) => {
     try {
       const config: RequestInit & { next?: any } = {};
 
@@ -76,7 +74,7 @@ export const categoriesService = {
       };
     }
   },
-  createCategory: async function (categoryData: CategoryData) {
+  createCategory: async (categoryData: CategoryData) =>{
     try {
       const cookieStore = await cookies();
       const url = `${API_URL}/api/categories`;
@@ -120,7 +118,7 @@ export const categoriesService = {
       };
     }
   },
-  updateCategory: async function (id: string, categoryData: CategoryData) {
+  updateCategory: async (id: string, categoryData: CategoryData) => {
     try {
       const cookieStore = await cookies();
       const url = `${API_URL}/api/categories/${id}`;

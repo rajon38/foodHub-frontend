@@ -3,7 +3,7 @@ const AUTH_URL = process.env.AUTH_URL
 const API_URL = process.env.API_URL
 
 export const userService ={
-    getSession: async function() {
+    getSession: async () => {
         try {
             const cookieStore = await cookies();
             console.log(cookieStore.toString());
@@ -27,7 +27,7 @@ export const userService ={
         }
     },
 
-    getProfile: async function () {
+    getProfile: async () =>{
         try {
             const cookieStore = await cookies();
             const url = `${API_URL}/api/users/profile`;

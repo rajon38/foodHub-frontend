@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 const API_URL = env.API_URL;
 
 interface ServiceOptions {
@@ -8,13 +9,24 @@ interface ServiceOptions {
 
 interface MealParams {
   search?: string;
+  providerId?: string;
   isAvailable?: boolean;
   page?: number;
   limit?: number;
 }
 
+export interface MealCreateData {
+  name: string;
+  description: string;
+  price: number;
+  isAvailable: boolean;
+  categoryId: string;
+  image?: string;
+}
+
 export const mealsService = {
-async getAllMeals(params?: MealParams,options?: ServiceOptions) {
+
+getAllMeals: async(params?: MealParams,options?: ServiceOptions) =>{
   try {
     const url = new URL(`${API_URL}/api/meals`);
 
@@ -71,8 +83,7 @@ async getAllMeals(params?: MealParams,options?: ServiceOptions) {
     };
   }
 },
-
-async getMealById(id: string, options?: ServiceOptions) {
+getMealById: async(id: string, options?: ServiceOptions) => {
   try {
     const url = `${API_URL}/api/meals/${id}`;
 
@@ -108,6 +119,114 @@ async getMealById(id: string, options?: ServiceOptions) {
       data: null,
       error: { 
         message: err instanceof Error ? err.message : "Something went wrong while fetching meal" 
+      },
+    };
+  }
+},
+
+createMeal: async(data: MealCreateData) => {
+  try {
+    const cookieStore = await cookies();
+    const url = `${API_URL}/api/meals`;
+
+    const config: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: cookieStore.toString()
+      },
+      body: JSON.stringify(data),
+    };
+
+    const res = await fetch(url, config);
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to create meal: ${res.status} ${res.statusText} - ${errorText}`);
+    }
+
+    const json = await res.json();
+
+    return {
+      data: json,
+      error: null,
+    };
+  } catch (err) {
+    return {
+      data: null,
+      error: { 
+        message: err instanceof Error ? err.message : "Something went wrong while creating meal" 
+      },
+    };
+  }
+},
+
+updateMeal: async(id: string, data: Partial<MealCreateData>) => {
+  try {
+    const cookieStore = await cookies();
+    const url = `${API_URL}/api/meals/${id}`;
+
+    const config: RequestInit = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: cookieStore.toString()
+      },
+      body: JSON.stringify(data),
+    };
+
+    const res = await fetch(url, config);
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update meal: ${res.status} ${res.statusText} - ${errorText}`);
+    }
+
+    const json = await res.json();
+
+    return {
+      data: json,
+      error: null,
+    };
+  } catch (err) {
+    return {
+      data: null,
+      error: { 
+        message: err instanceof Error ? err.message : "Something went wrong while updating meal" 
+      },
+    };
+  }
+},
+
+deleteMeal: async(id: string) => {
+  try {
+    const cookieStore = await cookies();
+    const url = `${API_URL}/api/meals/${id}`;
+
+    const config: RequestInit = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: cookieStore.toString()
+      },
+    };
+
+    const res = await fetch(url, config);
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to delete meal: ${res.status} ${res.statusText} - ${errorText}`);
+    }
+
+    return {
+      data: true,
+      error: null,
+    };
+  } catch (err) {
+    return {
+      data: null,
+      error: { 
+        message: err instanceof Error ? err.message : "Something went wrong while deleting meal" 
       },
     };
   }

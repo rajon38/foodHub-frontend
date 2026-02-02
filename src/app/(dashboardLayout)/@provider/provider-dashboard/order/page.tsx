@@ -5,6 +5,7 @@ import { userService } from "@/services/user.service";
 import { Roles } from "@/constants/roles";
 
 export const dynamic = 'force-dynamic';
+
 interface ProviderOrderPageProps {
   searchParams: Promise<{
     page?: string;
@@ -15,9 +16,9 @@ export default async function ProviderOrderPage({ searchParams }: ProviderOrderP
   // Get session and verify provider role
   const { data: profile } = await userService.getProfile();
   
-    if (!profile || profile.role !== Roles.provider) {
-      redirect("/login");
-    }
+  if (!profile || profile.role !== Roles.provider) {
+    redirect("/login");
+  }
 
   const providerId = profile.providerProfile.id;
 
@@ -40,7 +41,7 @@ export default async function ProviderOrderPage({ searchParams }: ProviderOrderP
 
   // Fetch orders for this provider only
   const { data, meta, error } = await orderService.getAllOrders({
-    providerId: providerId, // Use provider ID from session
+    providerId: providerId,
     page,
     limit,
   });
@@ -91,8 +92,9 @@ export default async function ProviderOrderPage({ searchParams }: ProviderOrderP
         <OrderTableWrapper
           orders={data || []}
           pagination={meta || { page: 1, limit: 10, totalPages: 1, totalItems: 0 }}
-          showCustomer={true} // Show customer information for provider
-          showProvider={false} // Don't show provider column since all orders belong to this provider
+          showCustomer={true}
+          showProvider={false}
+          userRole="provider"
         />
       )}
     </div>

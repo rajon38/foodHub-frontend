@@ -17,7 +17,7 @@ interface Order {
   deliveryAddress: string;
   paymentMethod: string;
   totalPrice: number;
-  status: "PENDING" | "CONFIRMED" | "ACCEPTED" | "PREPARING" | "OUT_FOR_DELIVERY" | "DELIVERED" | "CANCELLED";
+  status: "PENDING" | "ACCEPTED" | "PREPARING" | "ON_THE_WAY" | "DELIVERED" | "CANCELLED";
   items: Array<{
     id: string;
     mealId: string;
@@ -44,6 +44,7 @@ interface OrderTableWrapperProps {
   pagination: PaginationMeta;
   showCustomer?: boolean;
   showProvider?: boolean;
+  userRole?: "customer" | "provider" | "admin";
 }
 
 export function OrderTableWrapper({
@@ -51,6 +52,7 @@ export function OrderTableWrapper({
   pagination,
   showCustomer = false,
   showProvider = false,
+  userRole = "customer",
 }: OrderTableWrapperProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,6 +70,7 @@ export function OrderTableWrapper({
       onPageChange={handlePageChange}
       showCustomer={showCustomer}
       showProvider={showProvider}
+      userRole={userRole}
     />
   );
 }
