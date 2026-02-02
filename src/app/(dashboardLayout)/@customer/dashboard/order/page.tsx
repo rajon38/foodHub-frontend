@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Roles } from "@/constants/roles";
 import { userService } from "@/services/user.service";
 
+export const dynamic = 'force-dynamic';
 interface CustomerOrderPageProps {
   searchParams: Promise<{
     page?: string;

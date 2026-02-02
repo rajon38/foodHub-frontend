@@ -76,18 +76,18 @@ export const orderService = {
             cache: "no-store"
         });
 
+
         if (!res.ok) {
             const errorText = await res.text();
             throw new Error(`Failed to fetch orders: ${res.status} ${res.statusText} - ${errorText}`);
         }
 
         const json = await res.json();
-        
         const pagination = {
             page: json.meta.page,
             limit: json.meta.limit,
             totalPages: json.meta.totalPages,
-            totalItems: json.meta.total,
+            totalItems: json.meta.total, // Map 'total' to 'totalItems'
         };
         
         return {

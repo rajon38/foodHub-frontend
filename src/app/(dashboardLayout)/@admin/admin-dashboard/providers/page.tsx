@@ -3,7 +3,7 @@ import { ProviderTable } from "@/components/modules/provider/provider-table";
 import { ProviderDialog } from "@/components/modules/provider/provider-dialog";
 import { Suspense } from "react";
 import { Provider } from "@/types";
-
+export const dynamic = 'force-dynamic';
 interface ProviderPageProps {
   searchParams: {
     search?: string;

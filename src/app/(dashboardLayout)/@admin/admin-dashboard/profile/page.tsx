@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
-
+export const dynamic = 'force-dynamic';
 export default async function ProfilePage() {
   // 1. Get profile from auth service
   const { data: profile, error } = await userService.getProfile();

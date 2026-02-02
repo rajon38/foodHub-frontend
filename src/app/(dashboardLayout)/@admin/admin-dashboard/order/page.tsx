@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";// Adjust import based on your auth i
 import { userService } from "@/services/user.service";
 import { Roles } from "@/constants/roles";
 
+export const dynamic = 'force-dynamic';
+
 interface AdminOrderPageProps {
   searchParams: {
     page?: string;

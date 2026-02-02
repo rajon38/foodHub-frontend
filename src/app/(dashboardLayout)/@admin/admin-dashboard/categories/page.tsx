@@ -2,7 +2,7 @@ import { CategoryForm } from "@/components/modules/category/category-form";
 import { categoriesService } from "@/services/categories.service";
 import { Category } from "@/types/category.type";
 import { CategoryDialog } from "@/components/modules/category/category-dialog";
-
+export const dynamic = 'force-dynamic';
 export default async function CategoriesPage() {
   const { data: categories, error } =
     await categoriesService.getAllCategories();

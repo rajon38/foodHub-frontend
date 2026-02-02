@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
 import { Roles } from "@/constants/roles";
 
+export const dynamic = 'force-dynamic';
 interface ProviderOrderPageProps {
   searchParams: Promise<{
     page?: string;
