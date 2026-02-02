@@ -7,6 +7,10 @@ interface ServiceOptions{
     revalidate?: number;
 }
 
+export interface CategoryData {
+    name: string;
+}
+
 
 export const categoriesService = {
   async getAllCategories(
@@ -72,4 +76,92 @@ export const categoriesService = {
       };
     }
   },
+  createCategory: async function (categoryData: CategoryData) {
+    try {
+      const cookieStore = await cookies();
+      const url = `${API_URL}/api/categories`;
+
+      const config: RequestInit = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          cookie: cookieStore.toString()
+        },
+        body: JSON.stringify(categoryData)
+      };
+
+      const res = await fetch(url, config);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error(`Category creation failed: ${res.status} ${res.statusText}`, errorText);
+        return {
+          data: null,
+          error: { 
+            message: `Failed to create category: ${res.status}`,
+            status: res.status
+          }
+        };
+      }
+
+      const data = await res.json();
+
+      return {
+        data,
+        error: null
+      };
+    } catch (error) {
+      console.error("Category creation error:", error);
+      return {
+        data: null,
+        error: { 
+          message: error instanceof Error ? error.message : "Failed to create category"
+        }
+      };
+    }
+  },
+  updateCategory: async function (id: string, categoryData: CategoryData) {
+    try {
+      const cookieStore = await cookies();
+      const url = `${API_URL}/api/categories/${id}`;
+
+      const config: RequestInit = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          cookie: cookieStore.toString()
+        },
+        body: JSON.stringify(categoryData)
+      };
+
+      const res = await fetch(url, config);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error(`Category update failed: ${res.status} ${res.statusText}`, errorText);
+        return {
+          data: null,
+          error: { 
+            message: `Failed to update category: ${res.status}`,
+            status: res.status
+          }
+        };
+      }
+
+      const data = await res.json();
+
+      return {
+        data,
+        error: null
+      };
+    } catch (error) {
+      console.error("Category update error:", error);
+      return {
+        data: null,
+        error: { 
+          message: error instanceof Error ? error.message : "Failed to update category"
+        }
+      };
+    }
+  }
 };

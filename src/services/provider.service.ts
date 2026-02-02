@@ -102,5 +102,9 @@ async getProviderById(id: string) {
         },
       };
     }
-  }
+  },
+
+async updateProvider(id: string) {
+  
+}
 }
