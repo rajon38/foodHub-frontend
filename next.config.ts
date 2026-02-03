@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5007"}/api/:path*`,
+        source: "/api/auth/:path*",
+        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path*`,
       },
     ];
   }

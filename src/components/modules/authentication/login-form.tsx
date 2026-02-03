@@ -30,7 +30,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
   const handleGoogleLogin = async () => {
     const data = authClient.signIn.social({
       provider: "google",
-      callbackURL: "http://localhost:3000",
+      callbackURL: process.env.FRONTEND_API || "http://localhost:3000",
     });
 
   };
@@ -53,7 +53,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Logged in successfully!", {id: toastId});
-        //window.location.href = "/";
+        window.location.href = "/";
       } catch (error) {
         toast.error("Something went wrong. Please try again.", {id: toastId});
       }
