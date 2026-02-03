@@ -52,7 +52,7 @@ export function ProviderForm({
         let res;
         if (isEditMode) {
           res = await updateProvider(provider.id, value);
-          console.log("Update Provider Response:", res);
+          
         } else {
           // Implement createProvider action when needed
           throw new Error("Create provider not implemented yet.");

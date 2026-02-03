@@ -9,7 +9,6 @@ export default async function AdminPage() {
   // Get profile
   const { data: profile, error } = await userService.getProfile();
 
-  console.log("Admin Profile:", profile, error);
 
   // No session / not logged in
   if (error || !profile) {

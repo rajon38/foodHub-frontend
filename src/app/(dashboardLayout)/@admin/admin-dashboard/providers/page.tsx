@@ -36,7 +36,6 @@ export default async function ProvidersPage({
     }
   );
 
-  console.log("Admin Providers Result:", result); // Debug log
 
   const { data: providers, meta, error } = result;
 

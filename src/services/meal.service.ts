@@ -56,8 +56,7 @@ getAllMeals: async(params?: MealParams,options?: ServiceOptions) =>{
     };
 
     const res = await fetch(url.toString(), config);
-
-    console.log("Fetch URL:", url.toString());
+;
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -66,7 +65,6 @@ getAllMeals: async(params?: MealParams,options?: ServiceOptions) =>{
 
     const json = await res.json();
 
-    console.log("Fetched Meals Data:", json);
 
     return {
       data: Array.isArray(json.data) ? json.data : [],

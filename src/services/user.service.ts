@@ -26,7 +26,6 @@ export const userService ={
     getSession: async () => {
         try {
             const cookieStore = await cookies();
-            console.log(cookieStore.toString());
             const res = await fetch(`${AUTH_URL}/get-session`,
                 {
                     headers: {
@@ -66,7 +65,6 @@ export const userService ={
             // Check if response is OK before parsing
             if (!res.ok) {
                 const errorText = await res.text();
-                console.error(`Profile fetch failed: ${res.status} ${res.statusText}`, errorText);
                 return {
                     data: null,
                     error: { 
@@ -83,7 +81,6 @@ export const userService ={
                 error: null
             };
         } catch (error) {
-            console.error("Profile error:", error);
             return {
                 data: null,
                 error: { 

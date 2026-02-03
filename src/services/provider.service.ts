@@ -167,7 +167,6 @@ updateProvider: async (id: string, data: ProviderUpdateData) =>{
 
     const json = await res.json();
 
-    console.log("Updated Provider Data:", json);
 
     return {
       data: json,
