@@ -23,6 +23,41 @@ export interface ProviderUpdateData {
 }
 
 export const providerService = {
+createProvider: async (data: ProviderUpdateData) =>{
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/api/providers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: cookieStore.toString()
+      },
+      body: JSON.stringify(data),
+    });
+
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`API Error (${res.status}):`, errorText);
+      throw new Error(`Failed to create provider: ${res.status} ${res.statusText}`);
+    }
+
+    const json = await res.json();
+
+
+    return {
+      data: json,
+      error: null,
+    };
+  } catch (err) {
+      return {
+        data: null,
+        error: { 
+          message: err instanceof Error ? err.message : "Something went wrong while creating the provider" 
+        },
+      };
+    }
+},
 getAllProviders: async (params?: ProviderParams,options?: ServiceOptions) => {
   try {
     const url = new URL(`${API_URL}/api/providers`);
@@ -52,7 +87,6 @@ getAllProviders: async (params?: ProviderParams,options?: ServiceOptions) => {
 
     const res = await fetch(url.toString(), config);
 
-    console.log("Fetch URL:", url.toString());
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -61,7 +95,6 @@ getAllProviders: async (params?: ProviderParams,options?: ServiceOptions) => {
 
     const json = await res.json();
 
-    console.log("Fetched Providers Data:", json);
 
     return {
       data: json.data,
@@ -89,7 +122,6 @@ getProviderById: async (id: string) => {
         cache: 'no-store',
       });
 
-      console.log("Fetch URL:", `${API_URL}/api/providers/${id}`);
 
       if (!res.ok) {
         const errorText = await res.text();
@@ -99,7 +131,6 @@ getProviderById: async (id: string) => {
 
       const json = await res.json();
 
-      console.log("Fetched Provider Data:", json);
 
       return {
         data: json,
@@ -127,8 +158,6 @@ updateProvider: async (id: string, data: ProviderUpdateData) =>{
       body: JSON.stringify(data),
     });
 
-    console.log("Fetch URL:", `${API_URL}/api/providers/${id}`);
-    console.log("Update Data:", data);
 
     if (!res.ok) {
       const errorText = await res.text();

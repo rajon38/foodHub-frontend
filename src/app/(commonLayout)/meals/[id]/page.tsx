@@ -1,9 +1,10 @@
 import { mealsService } from "@/services/meal.service";
+import { userService } from "@/services/user.service";
 import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { Review } from "@/types";
 import { OrderDialog } from "@/components/modules/orders/order-dialog";
+import { ReviewSection } from "@/components/layout/review-section";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -12,6 +13,9 @@ interface PageProps {
 export default async function MealDetailsPage({ params }: PageProps) {
   const { id } = await params;
   const { data: meal, error } = await mealsService.getMealById(id);
+
+  // Get current user profile (for review functionality and role-based permissions)
+  const { data: profile } = await userService.getProfile();
 
   if (error)
     return <p className="text-center text-red-500 mt-10">{error.message}</p>;
@@ -101,48 +105,13 @@ export default async function MealDetailsPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Reviews */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm mt-8">
-          <h2 className="text-xl font-bold mb-4">
-            Reviews
-            {meal.reviews?.length > 0 && (
-              <span className="ml-2 text-sm font-medium text-gray-500">
-                ({meal.reviews.length})
-              </span>
-            )}
-          </h2>
-
-          {meal.reviews && meal.reviews.length > 0 ? (
-            <ul className="space-y-5">
-              {meal.reviews.map((review: Review) => (
-                <li key={review.id} className="border-b last:border-b-0 pb-5">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-gray-900">
-                      {review.customer?.name || "Anonymous"}
-                    </span>
-
-                    <div className="flex items-center gap-1 text-yellow-500">
-                      <Star className="w-4 h-4 fill-yellow-400" />
-                      <span className="text-sm font-medium">
-                        {review.rating?.toFixed(1) || "N/A"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <p className="mt-2 text-gray-700">{review.comment}</p>
-
-                  <p className="text-xs text-gray-500 mt-2">
-                    {new Date(review.createdAt || "").toLocaleDateString()}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500 text-sm">
-              No reviews yet. Be the first to review this meal 🍽️
-            </p>
-          )}
-        </div>
+        {/* Reviews Section - Now with role-based permissions */}
+        <ReviewSection
+          reviews={meal.reviews || []}
+          mealId={meal.id}
+          currentUserId={profile?.id}
+          currentUserRole={profile?.role}
+        />
 
         {/* Sticky Order Button for Mobile */}
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg sm:hidden z-50">
